@@ -6,7 +6,7 @@ from fastapi import FastAPI, Header, HTTPException
 from fastapi.responses import Response
 from pydantic import BaseModel
 
-from autohedge import AutoHedge  # matches the PDF usage :contentReference[oaicite:2]{index=2}
+from autohedge import AutoFund  # matches the PDF usage :contentReference[oaicite:2]{index=2}
 
 app = FastAPI(title="AutoHedge API")
 
@@ -56,8 +56,8 @@ def trigger_trade(req: TradeRequest, x_api_key: Optional[str] = Header(default=N
         extra.append(f"risk_level={req.risk_level}")
     task = req.task if not extra else f"{req.task} ({', '.join(extra)})"
 
-    trading_system = AutoHedge(req.stocks)  # matches PDF :contentReference[oaicite:3]{index=3}
-    result = trading_system.run(task=task)
+    trading_system = AutoFund(req.stocks)  # matches PDF :contentReference[oaicite:3]{index=3}
+    result = trading_system.run(task=req.task)
     return {"result": result}
 
 
